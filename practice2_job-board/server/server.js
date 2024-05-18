@@ -15,7 +15,7 @@ app.post("/login", handleLogin);
 
 //! apollo server
 
-const typeDefs = await readFile("./schema.graphql", 'utf-8');
+const typeDefs = await readFile("./schema.graphql", "utf-8");
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 await apolloServer.start();
