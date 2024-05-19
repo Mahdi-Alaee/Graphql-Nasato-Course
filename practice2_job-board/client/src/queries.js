@@ -15,8 +15,7 @@ export async function getJobs() {
             name
           }
         }
-      }
-      
+    }
     `;
 
   const { jobs } = await client.request(query);

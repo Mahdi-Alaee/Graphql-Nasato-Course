@@ -6,10 +6,7 @@ function HomePage() {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const jobs = await getJobs();
-      setJobs(jobs);
-    })();
+    getJobs().then(setJobs);
   }, []);
 
   return (
