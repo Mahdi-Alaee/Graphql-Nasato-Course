@@ -1,13 +1,14 @@
 type Query {
   jobs: [Job!]
+  job(id: ID!): Job
 }
 
 type Job {
   id: ID!
   title: String!
   """
-  it's not a normal string but it's a 
-  ISO kind date of when the comment is 
+  it's not a normal string but it's a
+  ISO kind date of when the comment is
   posted
   """
   date: String!

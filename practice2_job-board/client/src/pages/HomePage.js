@@ -12,7 +12,7 @@ function HomePage() {
   return (
     <div>
       <h1 className="title">Job Board</h1>
-      {jobs.length > 0 && <JobList jobs={jobs} />}
+      <JobList jobs={jobs} />
     </div>
   );
 }
