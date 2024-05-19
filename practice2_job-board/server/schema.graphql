@@ -11,5 +11,12 @@ type Job {
   posted
   """
   date: String!
+  company: Company!
+  description: String
+}
+
+type Company {
+  id: ID!
+  name: String!
   description: String
 }
