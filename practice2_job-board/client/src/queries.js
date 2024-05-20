@@ -22,7 +22,7 @@ export async function getJobs() {
   return jobs;
 }
 
-export async function getJob(id) {
+export async function getJobById(id) {
   const query = `#graphql
       query jobById($id: ID!) {
         job(id: $id){
@@ -35,8 +35,22 @@ export async function getJob(id) {
           }
         }
       }
-    `
+    `;
 
-  const { job } = await client.request(query, {id});
+  const { job } = await client.request(query, { id });
   return job;
+}
+
+export async function getCompanyById(id) {
+  const query = `#graphql
+  query getCompanyById($id: ID!){
+    company(id: $id){
+      name
+      description
+    }
+  }
+  `;
+
+  const {company} = await client.request(query, { id });
+  return company;
 }
