@@ -5,23 +5,37 @@ import JobList from "../components/JobList";
 
 function CompanyPage() {
   const { companyId } = useParams();
-  const [company, setCompany] = useState(null);
+  const [state, setState] = useState({
+    company: null,
+    isError: false,
+    isLoading: true,
+  });
 
   useEffect(() => {
-    getCompanyById(companyId).then(setCompany);
+    (async () => {
+      try {
+        const company = await getCompanyById(companyId);
+        setState({ company, isError: false, isLoading: false });
+      } catch (error) {
+        console.log(error);
+        setState({ company: null, isError: true, isLoading: false });
+      }
+    })();
   }, [companyId]);
-
-  if (company === null) return <h1>Loading ...</h1>;
-  return (
-    <div>
-      <h1 className="title">{company.name}</h1>
-      <div className="box">{company.description}</div>
-      <h2 className="title is-5">
-        Jobs at {company.name}
-      </h2>
-      <JobList jobs={company.jobs} />
-    </div>
-  );
+  if (state.isLoading) {
+    return <h1>Loading ...</h1>;
+  } else if (state.isError) {
+    return <h1 style={{ color: "red" }}>Data is unavalible</h1>;
+  } else {
+    return (
+      <div>
+        <h1 className="title">{state.company.name}</h1>
+        <div className="box">{state.company.description}</div>
+        <h2 className="title is-5">Jobs at {state.company.name}</h2>
+        <JobList jobs={state.company.jobs} />
+      </div>
+    );
+  }
 }
 
 export default CompanyPage;
