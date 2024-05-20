@@ -47,10 +47,20 @@ export async function getCompanyById(id) {
     company(id: $id){
       name
       description
+      jobs {
+        id
+        title
+        date
+        description
+        company {
+          id
+          name
+        }
+      }
     }
   }
   `;
 
-  const {company} = await client.request(query, { id });
+  const { company } = await client.request(query, { id });
   return company;
 }
