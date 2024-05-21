@@ -64,3 +64,19 @@ export async function getCompanyById(id) {
   const { company } = await client.request(query, { id });
   return company;
 }
+
+export async function createJob(companyId, title, description) {
+  const mutation = `#graphql
+    mutation CreateJob($input: CreateJobInput!){
+      createJob(input: $input) {
+        id
+      }
+    }
+  `;
+
+  const data = await client.request(mutation, {
+    input: { companyId, title, description },
+  });
+  console.log(data);
+  return data;
+}
