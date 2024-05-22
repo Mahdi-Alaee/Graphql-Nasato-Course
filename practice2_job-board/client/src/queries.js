@@ -68,17 +68,16 @@ export async function getCompanyById(id) {
 export async function createJob(companyId, title, description) {
   const mutation = `#graphql
     mutation CreateJob($input: CreateJobInput!){
-      createJob(input: $input) {
+      job:createJob(input: $input) {
         id
       }
     }
   `;
 
-  const { data } = await client.request(mutation, {
+  const { job } = await client.request(mutation, {
     input: { companyId, title, description },
   });
-  console.log(data);
-  return data;
+  return job.id;
 }
 
 export async function deleteJob(id) {
@@ -92,6 +91,5 @@ export async function deleteJob(id) {
   `;
 
   const data = await client.request(mutation, { id });
-  console.log(data);
   return data;
 }

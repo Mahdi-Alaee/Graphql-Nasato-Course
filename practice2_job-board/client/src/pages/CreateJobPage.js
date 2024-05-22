@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { createJob } from "../queries";
+import { useNavigate } from "react-router-dom";
 
 function CreateJobPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const navigator = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const companyId = "FjcJCHJALA4i";
-    const res = await createJob(companyId, title, description);
-    console.log(res);
+    const id = await createJob(companyId, title, description);
+    navigator(`/jobs/${id}`);
   };
 
   return (
