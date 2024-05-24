@@ -15,11 +15,15 @@ app.post("/login", handleLogin);
 
 //! apollo server
 
+function setContext({ req }) {
+  return { auth: req.auth };
+}
+
 const typeDefs = await readFile("./schema.graphql", "utf-8");
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 await apolloServer.start();
-app.use("/graphql", apolloMiddleWare(apolloServer));
+app.use("/graphql", apolloMiddleWare(apolloServer, { context: setContext }));
 
 app.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);
