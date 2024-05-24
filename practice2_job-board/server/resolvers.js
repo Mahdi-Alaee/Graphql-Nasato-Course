@@ -54,8 +54,17 @@ export const resolvers = {
       }
       return job;
     },
-    updateJob: (_root, { input: { id, title, description } }) =>
-      updateJob({ id, title, description }),
+    updateJob: async (
+      _root,
+      { input: { id, title, description } },
+      { auth }
+    ) => {
+      const job = await updateJob({ id, title, description }, auth.companyId);
+      if (!job) {
+        throw graphqlErrorGenerator("you can't edit this job", "NO_ACCESS");
+      }
+      return job;
+    },
   },
 };
 
