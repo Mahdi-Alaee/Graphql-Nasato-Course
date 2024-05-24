@@ -47,7 +47,13 @@ export const resolvers = {
       }
       return createJob({ companyId: auth.companyId, title, description });
     },
-    deleteJob: (_root, { id }) => deleteJob(id),
+    deleteJob: async (_root, { id }, { auth }) => {
+      const job = await deleteJob(id, auth.companyId);
+      if (!job) {
+        throw graphqlErrorGenerator("you can't delete this job", "NO_ACCESS");
+      }
+      return job;
+    },
     updateJob: (_root, { input: { id, title, description } }) =>
       updateJob({ id, title, description }),
   },
