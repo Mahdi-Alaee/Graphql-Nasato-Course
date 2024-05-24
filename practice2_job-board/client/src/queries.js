@@ -74,9 +74,15 @@ export async function createJob(title, description) {
     }
   `;
 
-  const { job } = await client.request(mutation, {
-    input: { title, description },
-  });
+  const { job } = await client.request(
+    mutation,
+    {
+      input: { title, description },
+    },
+    {
+      'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  );
   return job.id;
 }
 
