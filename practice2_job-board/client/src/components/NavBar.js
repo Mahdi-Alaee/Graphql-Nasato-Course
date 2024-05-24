@@ -14,9 +14,6 @@ function NavBar({ user, onLogout }) {
         <Link className="navbar-item" to="/">
           Home
         </Link>
-        <Link className="navbar-item" to="/jobs/new">
-          NewJob
-        </Link>
       </div>
       {loggedIn ? (
         <div className="navbar-end">

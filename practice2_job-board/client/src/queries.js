@@ -65,7 +65,7 @@ export async function getCompanyById(id) {
   return company;
 }
 
-export async function createJob(companyId, title, description) {
+export async function createJob(title, description) {
   const mutation = `#graphql
     mutation CreateJob($input: CreateJobInput!){
       job:createJob(input: $input) {
@@ -75,7 +75,7 @@ export async function createJob(companyId, title, description) {
   `;
 
   const { job } = await client.request(mutation, {
-    input: { companyId, title, description },
+    input: { title, description },
   });
   return job.id;
 }

@@ -37,17 +37,15 @@ export const resolvers = {
     jobs: (company) => getCompanyJobs(company.id),
   },
   Mutation: {
-    createJob: (
-      _root,
-      { input: { companyId, title, description } },
-      { auth }
-    ) => {
-      if (!auth)
+    createJob: (_root, { input: { title, description } }, { auth }) => {
+      console.log(auth);
+      if (!auth) {
         throw graphqlErrorGenerator(
           "you can't post job before login",
           "INVALID_TOKEN"
         );
-      return createJob({ companyId, title, description });
+      }
+      return createJob({ companyId: auth.companyId, title, description });
     },
     deleteJob: (_root, { id }) => deleteJob(id),
     updateJob: (_root, { input: { id, title, description } }) =>
