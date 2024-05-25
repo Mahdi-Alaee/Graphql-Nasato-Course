@@ -1,5 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 import { getAccessToken } from "./lib/auth";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new GraphQLClient("http://localhost:9000/graphql", {
   headers: () => {
@@ -10,6 +11,11 @@ const client = new GraphQLClient("http://localhost:9000/graphql", {
 
     return { Authorization: `Bearer ${token}` };
   },
+});
+
+const apolloClient = new ApolloClient({
+  uri: "http://localhost:9000/graphql",
+  cache: new InMemoryCache(),
 });
 
 export async function getJobs() {
@@ -33,7 +39,7 @@ export async function getJobs() {
 }
 
 export async function getJobById(id) {
-  const query = `#graphql
+  const query = gql`
       query jobById($id: ID!) {
         job(id: $id){
           title
