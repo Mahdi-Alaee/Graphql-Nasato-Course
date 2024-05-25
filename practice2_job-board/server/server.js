@@ -17,7 +17,6 @@ app.post("/login", handleLogin);
 //! apollo server
 
 async function setContext({ req }) {
-  console.log('[setContext] req.auth', req.auth);
   if (!req.auth) return {};
   const auth = await getUser(req.auth.sub);
   return { auth };

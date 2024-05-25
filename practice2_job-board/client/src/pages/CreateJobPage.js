@@ -9,8 +9,7 @@ function CreateJobPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const companyId = "FjcJCHJALA4i";
-    const id = await createJob(companyId, title, description);
+    const id = await createJob(title,description);
     navigator(`/jobs/${id}`);
   };
 

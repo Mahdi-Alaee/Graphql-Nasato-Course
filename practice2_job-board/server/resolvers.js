@@ -38,7 +38,6 @@ export const resolvers = {
   },
   Mutation: {
     createJob: (_root, { input: { title, description } }, { auth }) => {
-      console.log(auth);
       if (!auth) {
         throw graphqlErrorGenerator(
           "you can't post job before login",

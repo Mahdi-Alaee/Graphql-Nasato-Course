@@ -1,20 +1,31 @@
-import { GraphQLClient } from "graphql-request";
 import { getAccessToken } from "./lib/auth";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import {
+  InMemoryCache,
+  gql,
+  ApolloClient,
+  HttpLink,
+  ApolloLink,
+  concat,
+} from "@apollo/client";
 
-const client = new GraphQLClient("http://localhost:9000/graphql", {
-  headers: () => {
-    const token = getAccessToken();
-    if (!token) {
-      return {};
-    }
-
-    return { Authorization: `Bearer ${token}` };
-  },
+const httpLink = new HttpLink({
+  uri: "http://localhost:9000/graphql",
 });
 
-const apolloClient = new ApolloClient({
-  uri: "http://localhost:9000/graphql",
+const authLink = new ApolloLink((operation, forward) => {
+  const token = getAccessToken();
+  if (token) {
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: concat(authLink, httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -34,7 +45,7 @@ export async function getJobs() {
     }
   `;
 
-  const { data } = await apolloClient.query({ query });
+  const { data } = await client.query({ query });
   return data.jobs;
 }
 
@@ -53,7 +64,7 @@ export async function getJobById(id) {
     }
   `;
 
-  const { data } = await apolloClient.query({
+  const { data } = await client.query({
     query,
     variables: { id },
   });
@@ -80,35 +91,23 @@ export async function getCompanyById(id) {
     }
   `;
 
-  const { data } = await apolloClient.query({ query, variables: { id } });
+  const { data } = await client.query({ query, variables: { id } });
   return data.company;
 }
 
 export async function createJob(title, description) {
-  const mutation = `#graphql
-    mutation CreateJob($input: CreateJobInput!){
+  const mutation = gql`
+    mutation CreateJob($input: CreateJobInput!) {
       job:createJob(input: $input) {
         id
+        title
       }
     }
   `;
 
-  const { job } = await client.request(mutation, {
-    input: { title, description },
+  const { data } = await client.mutate({
+    mutation,
+    variables: { input: { title, description } },
   });
-  return job.id;
-}
-
-export async function deleteJob(id) {
-  const mutation = `#graphql
-    mutation DeleteJob($id: ID!){
-      deleteJob(id: $id) {
-        id
-        title    
-      }
-    }
-  `;
-
-  const data = await client.request(mutation, { id });
-  return data;
+  return data.job.id;
 }
