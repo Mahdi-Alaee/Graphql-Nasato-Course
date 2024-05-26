@@ -45,7 +45,7 @@ export async function getJobs() {
     }
   `;
 
-  const { data } = await client.query({ query });
+  const { data } = await client.query({ query, fetchPolicy: "network-only" });
   return data.jobs;
 }
 
@@ -98,7 +98,7 @@ export async function getCompanyById(id) {
 export async function createJob(title, description) {
   const mutation = gql`
     mutation CreateJob($input: CreateJobInput!) {
-      job:createJob(input: $input) {
+      job: createJob(input: $input) {
         id
         title
       }
