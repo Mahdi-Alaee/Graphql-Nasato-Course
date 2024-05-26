@@ -27,6 +27,11 @@ const authLink = new ApolloLink((operation, forward) => {
 const client = new ApolloClient({
   link: concat(authLink, httpLink),
   cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'network-only'
+    }
+  }
 });
 
 export async function getJobs() {
@@ -45,7 +50,7 @@ export async function getJobs() {
     }
   `;
 
-  const { data } = await client.query({ query, fetchPolicy: "network-only" });
+  const { data } = await client.query({ query });
   return data.jobs;
 }
 
