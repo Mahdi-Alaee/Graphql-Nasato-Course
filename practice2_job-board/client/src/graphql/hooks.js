@@ -1,5 +1,11 @@
-import { useQuery } from "@apollo/client";
-import { getCompanyByIdQuery, getJobByIdQuery, getJobsQuery } from "./queries";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  createJobMutation,
+  getCompanyByIdQuery,
+  getJobByIdQuery,
+  getJobsQuery,
+} from "./queries";
+import { useNavigate } from "react-router";
 
 export function useCompany(id) {
   const { error, loading, data } = useQuery(getCompanyByIdQuery, {
@@ -22,4 +28,24 @@ export function useJobs() {
     fetchPolicy: "network-only",
   });
   return { loading, error: Boolean(error), jobs: data?.jobs };
+}
+
+export function useCreateJob(title, description) {
+  const navigator = useNavigate();
+  const [mutate] = useMutation(createJobMutation, {
+    variables: {
+      input: { description, title },
+    },
+  });
+
+  async function call() {
+    const {
+      data: {
+        job: { id },
+      },
+    } = await mutate();
+    navigator(`/jobs/${id}`);
+  }
+
+  return call;
 }

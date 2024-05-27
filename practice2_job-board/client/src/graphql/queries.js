@@ -79,26 +79,26 @@ export const getCompanyByIdQuery = gql`
   }
 `;
 
-export async function createJob(title, description) {
-  const mutation = gql`
-    mutation CreateJob($input: CreateJobInput!) {
-      job: createJob(input: $input) {
-        ...JobDetail
-      }
+export const createJobMutation = gql`
+  mutation CreateJob($input: CreateJobInput!) {
+    job: createJob(input: $input) {
+      ...JobDetail
     }
-    ${JobDetailFragment}
-  `;
+  }
+  ${JobDetailFragment}
+`;
+// export async function createJob(title, description) {
 
-  const { data } = await client.mutate({
-    mutation,
-    variables: { input: { title, description } },
-    update: (cache, { data }) => {
-      cache.writeQuery({
-        query: getJobByIdQuery,
-        variables: { id: data.job.id },
-        data,
-      });
-    },
-  });
-  return data.job.id;
-}
+//   const { data } = await client.mutate({
+//     mutation,
+//     variables: { input: { title, description } },
+//     update: (cache, { data }) => {
+//       cache.writeQuery({
+//         query: getJobByIdQuery,
+//         variables: { id: data.job.id },
+//         data,
+//       });
+//     },
+//   });
+//   return data.job.id;
+// }
