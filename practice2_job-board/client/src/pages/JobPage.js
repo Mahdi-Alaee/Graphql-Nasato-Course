@@ -1,18 +1,15 @@
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/formatters";
-import { useEffect, useState } from "react";
-import { getJobById } from "../graphql/queries";
+import { useJob } from "../graphql/hooks";
 
 function JobPage() {
   const { jobId } = useParams();
-  const [job, setJob] = useState(null);
+  const { error, job, loading } = useJob(jobId);
 
-  useEffect(() => {
-    getJobById(jobId).then(setJob);
-  }, [jobId]);
-
-  if (job) {
+  if (loading) return <h1>Loading ...</h1>;
+  else if (error) return <h1>Not Found</h1>;
+  else {
     return (
       <div>
         <h1 className="title is-2">{job.title}</h1>
@@ -27,7 +24,7 @@ function JobPage() {
         </div>
       </div>
     );
-  } else return <h1>Not Found</h1>;
+  }
 }
 
 export default JobPage;

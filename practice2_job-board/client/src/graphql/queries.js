@@ -56,7 +56,7 @@ export async function getJobs() {
   return data.jobs;
 }
 
-const getJobByIdQuery = gql`
+export const getJobByIdQuery = gql`
   query jobById($id: ID!) {
     job(id: $id) {
       ...JobDetail
