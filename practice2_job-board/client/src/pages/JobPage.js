@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/formatters";
 import { useEffect, useState } from "react";
-import { getJobById } from "../queries";
+import { getJobById } from "../graphql/queries";
 
 function JobPage() {
   const { jobId } = useParams();

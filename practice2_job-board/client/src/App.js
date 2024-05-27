@@ -9,7 +9,7 @@ import HomePage from './pages/HomePage';
 import JobPage from './pages/JobPage';
 import LoginPage from './pages/LoginPage';
 import { ApolloProvider } from '@apollo/client';
-import { client } from './queries';
+import { client } from './graphql/queries';
 
 function App() {
   const navigate = useNavigate();

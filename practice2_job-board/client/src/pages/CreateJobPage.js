@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createJob } from "../queries";
+import { createJob } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
 
 function CreateJobPage() {

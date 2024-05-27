@@ -1,4 +1,4 @@
-import { getAccessToken } from "./lib/auth";
+import { getAccessToken } from "../lib/auth";
 import {
   InMemoryCache,
   gql,
