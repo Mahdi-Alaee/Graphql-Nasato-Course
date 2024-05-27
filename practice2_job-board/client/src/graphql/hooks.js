@@ -30,22 +30,29 @@ export function useJobs() {
   return { loading, error: Boolean(error), jobs: data?.jobs };
 }
 
-export function useCreateJob(title, description) {
+export function useCreateJob() {
   const navigator = useNavigate();
-  const [mutate,result] = useMutation(createJobMutation, {
-    variables: {
-      input: { description, title },
-    },
-  });
+  const [mutate, { loading }] = useMutation(createJobMutation);
 
-  async function call() {
+  async function createJob(title, description) {
     const {
       data: {
         job: { id },
       },
-    } = await mutate();
+    } = await mutate({
+      variables: {
+        input: { description, title },
+      },
+      update: (cache, { data }) => {
+        cache.writeQuery({
+          query: getJobByIdQuery,
+          data,
+          variables: { id: data.job.id },
+        });
+      },
+    });
     navigator(`/jobs/${id}`);
   }
 
-  return [call, result];
+  return { createJob, loading };
 }
