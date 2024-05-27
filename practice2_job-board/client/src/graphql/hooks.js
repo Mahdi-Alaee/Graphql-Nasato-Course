@@ -32,7 +32,7 @@ export function useJobs() {
 
 export function useCreateJob(title, description) {
   const navigator = useNavigate();
-  const [mutate] = useMutation(createJobMutation, {
+  const [mutate,result] = useMutation(createJobMutation, {
     variables: {
       input: { description, title },
     },
@@ -47,5 +47,5 @@ export function useCreateJob(title, description) {
     navigator(`/jobs/${id}`);
   }
 
-  return call;
+  return [call, result];
 }

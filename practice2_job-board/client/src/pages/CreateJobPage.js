@@ -5,11 +5,11 @@ function CreateJobPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const call = useCreateJob(title, description);
+  const [call, result] = useCreateJob(title, description);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await call();
+    call();
   };
 
   return (
@@ -41,7 +41,11 @@ function CreateJobPage() {
           </div>
           <div className="field">
             <div className="control">
-              <button className="button is-link" onClick={handleSubmit}>
+              <button
+                className="button is-link"
+                onClick={handleSubmit}
+                disabled={result.loading}
+              >
                 Submit
               </button>
             </div>
