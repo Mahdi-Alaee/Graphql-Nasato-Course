@@ -23,15 +23,15 @@ export function useJob(id) {
   return { loading, error: Boolean(error), job: data?.job };
 }
 
-export function useJobs(limit,offset) {
+export function useJobs(limit, offset) {
   const { error, loading, data } = useQuery(getJobsQuery, {
     fetchPolicy: "network-only",
     variables: {
       limit,
-      offset
-    }
+      offset,
+    },
   });
-  return { loading, error: Boolean(error), data: data?.jobs };
+  return { loading, error: Boolean(error), jobs: data?.jobs };
 }
 
 export function useCreateJob() {
