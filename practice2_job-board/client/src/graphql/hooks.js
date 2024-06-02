@@ -31,7 +31,7 @@ export function useJobs(limit,offset) {
       offset
     }
   });
-  return { loading, error: Boolean(error), jobs: data?.jobs };
+  return { loading, error: Boolean(error), data: data?.jobs };
 }
 
 export function useCreateJob() {

@@ -7,12 +7,11 @@ const SHOW_JOBS_COUNT = 5;
 function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { jobs, error, loading } = useJobs(
+  const { data, error, loading } = useJobs(
     SHOW_JOBS_COUNT,
     (currentPage - 1) * SHOW_JOBS_COUNT
   );
-  const pagesCount = jobs ? jobs?.length / SHOW_JOBS_COUNT : 0;
-  console.log(jobs, pagesCount);
+  const pagesCount = data?.totalCount / SHOW_JOBS_COUNT;
   if (loading) {
     return <h1>Loading ...</h1>;
   } else if (error) {
@@ -42,7 +41,7 @@ function HomePage() {
             {">"}
           </button>
         </div>
-        <JobList jobs={jobs} />
+        <JobList jobs={data?.items} />
       </div>
     );
   }
