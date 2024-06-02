@@ -5,13 +5,16 @@ import {
   createJob,
   deleteJob,
   updateJob,
+  getJobsTotalCount,
 } from "./db/jobs.js";
 import { getCompany } from "./db/companies.js";
 import { GraphQLError } from "graphql";
 
 export const resolvers = {
   Query: {
-    jobs: (_root, {limit, offset}) => getJobs(limit,offset),
+    jobs: (_root, {limit, offset}) => {
+      return {items: getJobs(limit,offset), totalCount: getJobsTotalCount()}
+    },
     job: async (_root, { id }) => {
       const job = await getJob(id);
       if (!job) {

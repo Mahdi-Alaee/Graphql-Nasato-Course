@@ -11,6 +11,8 @@ function HomePage() {
     SHOW_JOBS_COUNT,
     (currentPage - 1) * SHOW_JOBS_COUNT
   );
+  const pagesCount = jobs ? jobs?.length / SHOW_JOBS_COUNT : 0;
+  console.log(jobs, pagesCount);
   if (loading) {
     return <h1>Loading ...</h1>;
   } else if (error) {
@@ -22,13 +24,21 @@ function HomePage() {
         {/* pagination */}
         <div>
           {/* prev */}
-          <button onClick={() => setCurrentPage((prev) => prev - 1)}>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
+            }
+          >
             {"<"}
           </button>
           {/* page */}
           <span style={{ margin: "0 5px" }}>{currentPage}</span>
           {/* next */}
-          <button onClick={() => setCurrentPage((prev) => prev + 1)}>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => (prev < pagesCount ? prev + 1 : prev))
+            }
+          >
             {">"}
           </button>
         </div>
