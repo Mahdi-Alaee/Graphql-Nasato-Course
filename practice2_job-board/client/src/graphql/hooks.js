@@ -48,6 +48,7 @@ export function useCreateJob() {
         input: { description, title },
       },
       update: (cache, { data }) => {
+        console.log(data);
         cache.writeQuery({
           query: getJobByIdQuery,
           data,
