@@ -1,5 +1,9 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { addMessageMutation, messagesQuery } from "./queries";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import {
+  addMessageMutation,
+  messageAddedSubscribtion,
+  messagesQuery,
+} from "./queries";
 
 export function useAddMessage() {
   const [mutate] = useMutation(addMessageMutation);
@@ -9,23 +13,6 @@ export function useAddMessage() {
       data: { message },
     } = await mutate({
       variables: { text },
-      update: (cache, { data: { message } }) => {
-        cache.updateQuery(
-          {
-            query: messagesQuery,
-          },
-          (oldData) => ({
-            messages: [...oldData.messages, message],
-          })
-        );
-      },
-      // update: (cache, {data}) => {
-      //   console.log(data);
-      //   cache.writeQuery({
-      //     query: messagesQuery,
-      //     data: {messages: [data.message]},
-      //   })
-      // }
     });
     return message;
   };
@@ -35,6 +22,21 @@ export function useAddMessage() {
 
 export function useMessages() {
   const { data } = useQuery(messagesQuery);
+
+  useSubscription(messageAddedSubscribtion, {
+    onData: ({ data, client }) => {
+      const newMessage = data.data.message;
+      client.cache.updateQuery(
+        {
+          query: messagesQuery,
+        },
+        (data) => ({
+          messages: [...data.messages, newMessage],
+        })
+      );
+    },
+  });
+
   return {
     messages: data?.messages ?? [],
   };
