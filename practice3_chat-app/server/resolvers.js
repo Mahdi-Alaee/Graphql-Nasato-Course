@@ -1,4 +1,4 @@
-import { GraphQLError, subscribe } from "graphql";
+import { GraphQLError } from "graphql";
 import { createMessage, getMessages } from "./db/messages.js";
 import { PubSub } from "graphql-subscriptions";
 
@@ -24,7 +24,12 @@ export const resolvers = {
 
   Subscription: {
     messageAdded: {
-      subscribe: () => pubSub.asyncIterator(messageAddedTrigger),
+      subscribe: (_root, _vars, { user }) => {
+        if (!user) {
+          throw unauthorizedError();
+        }
+        return pubSub.asyncIterator(messageAddedTrigger);
+      },
     },
   },
 };
