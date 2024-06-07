@@ -9,7 +9,8 @@
         "mappers": {
           "Company": "./src/db/types.ts#CompanyEntity",
           "Job": "./src/db/types.ts#JobEntity"
-        }
+        },
+        "contextType": "./src/resolvers.ts#ResolverContext"
       }
     }
   }

@@ -10,6 +10,13 @@ import {
   updateJob,
 } from "./db/jobs.js";
 import { Resolvers } from "./generated/schema.js";
+import { CompanyEntity, UserEntity } from "./db/types.js";
+import DataLoader from "dataloader";
+
+export interface ResolverContext {
+  companyLoader: DataLoader<string, CompanyEntity, string>;
+  user: UserEntity;
+}
 
 export const resolvers: Resolvers = {
   Query: {
@@ -39,6 +46,7 @@ export const resolvers: Resolvers = {
       if (!user) {
         throw unauthorizedError("Missing authentication");
       }
+
       return createJob({ companyId: user.companyId, title, description });
     },
 
