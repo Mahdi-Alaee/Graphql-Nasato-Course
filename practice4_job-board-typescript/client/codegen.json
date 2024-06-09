@@ -1,0 +1,11 @@
+{
+  "overwrite": true,
+  "schema": "../server/schema.graphql",
+  "documents": "./src/lib/graphql/queries.ts",
+  "generates": {
+    "src/generated/": {
+      "preset": "client",
+      "plugins": []
+    }
+  }
+}
