@@ -1,6 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { CompanyEntity, JobEntity } from './src/db/types.ts';
-import { ResolverContext } from './src/resolvers.ts';
+import { CompanyEntity, JobEntity } from '../db/types.js';
+import { ResolverContext } from '../resolvers.js';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
