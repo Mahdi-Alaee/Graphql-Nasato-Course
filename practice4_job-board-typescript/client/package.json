@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"graphql-codegen --config --watch codegen.json\"",
     "build": "react-scripts build",
     "codegen": "graphql-codegen --config codegen.json"
   },

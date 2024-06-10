@@ -1,5 +1,10 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { companyByIdQuery, createJobMutation, jobByIdQuery, jobsQuery } from './queries';
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  companyByIdQuery,
+  createJobMutation,
+  jobByIdQuery,
+  jobsQuery,
+} from "./queries";
 
 export function useCompany(id: string) {
   const { data, loading, error } = useQuery(companyByIdQuery, {
@@ -18,7 +23,7 @@ export function useJob(id: string) {
 export function useJobs(limit?: number, offset?: number) {
   const { data, loading, error } = useQuery(jobsQuery, {
     variables: { limit, offset },
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
   });
   return { jobs: data?.jobs, loading, error: Boolean(error) };
 }
@@ -27,7 +32,7 @@ export function useCreateJob() {
   const [mutate, { loading }] = useMutation(createJobMutation);
 
   const createJob = async (title: string, description?: string) => {
-    const { data: { job } } = await mutate({
+    const { data } = await mutate({
       variables: { input: { title, description } },
       update: (cache, { data }) => {
         cache.writeQuery({
@@ -37,7 +42,7 @@ export function useCreateJob() {
         });
       },
     });
-    return job;
+    return data.job;
   };
 
   return {
